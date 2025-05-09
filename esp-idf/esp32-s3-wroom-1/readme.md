@@ -2,10 +2,86 @@
 
 A modular firmware architecture for ESP32-S3-WROOM-1 devices with BME280 sensor integration and AWS IoT MQTT communication.
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub release](https://img.shields.io/github/release/georgevio/esp32-s3.svg)](https://github.com/georgevio/esp32-s3/releases/)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/georgevio/esp32-s3)
+[![ESP-IDF](https://img.shields.io/badge/ESP--IDF-v5.4.1-blue)](https://github.com/espressif/esp-idf)
+[![Platform](https://img.shields.io/badge/platform-ESP32--S3-orange)](https://www.espressif.com/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/georgevio/esp32-s3/pulls)
+[![Stars](https://img.shields.io/github/stars/georgevio/esp32-s3?style=social)](https://github.com/georgevio/esp32-s3/stargazers)
+[![AWS IoT](https://img.shields.io/badge/AWS%20IoT-Compatible-FF9900?logo=amazon-aws)](https://aws.amazon.com/iot/)
+[![BME280](https://img.shields.io/badge/Sensor-BME280-22AABB)](https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/)
+[![Documentation](https://img.shields.io/badge/docs-comprehensive-9cf)](https://github.com/georgevio/esp32-s3#readme)
+[![Open Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://opensource.org/)
+
+<div align="center">
+  
+  <p>
+    <a href="https://github.com/georgevio/esp32-s3/stargazers">
+      <img alt="GitHub stars" src="https://img.shields.io/github/stars/georgevio/esp32-s3?style=for-the-badge">
+    </a>
+    <a href="https://github.com/georgevio/esp32-s3/network">
+      <img alt="GitHub forks" src="https://img.shields.io/github/forks/georgevio/esp32-s3?style=for-the-badge">
+    </a>
+    <a href="https://github.com/georgevio/esp32-s3/issues">
+      <img alt="GitHub issues" src="https://img.shields.io/github/issues/georgevio/esp32-s3?style=for-the-badge">
+    </a>
+    <a href="https://github.com/georgevio/esp32-s3/graphs/contributors">
+      <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/georgevio/esp32-s3?style=for-the-badge">
+    </a>
+  </p>
+  
+  <h3>🌟 A modular firmware architecture for ESP32-S3-WROOM-1 devices 🌟</h3>
+  <h4>connecting IoT devices to AWS Cloud with BME280 environmental sensing capabilities</h4>
+  
+  <p>
+    <a href="#project-overview">Overview</a> •
+    <a href="#features">Features</a> •
+    <a href="#hardware-setup">Hardware</a> •
+    <a href="#aws-iot-setup">AWS IoT</a> •
+    <a href="#building-and-flashing">Building</a> •
+    <a href="#technical-challenges">Challenges</a>
+  </p>
+</div>
+
+---
+
+## ⚡ IoT Solution
+
 <p align="center">
   <img src="images/esp-s32.png" width="400">
   <br>
   <em>ESP32-S3 with a BME280 sensor</em>
+</p>
+
+<p align="center">
+  <img src="images/boot1.png" width="400">
+  <br>
+  <em>boot sequence 1</em>
+</p>
+
+<p align="center">
+  <img src="images/boot2.png" width="400">
+  <br>
+  <em>boot sequence 2</em>
+</p>
+
+<p align="center">
+  <img src="images/boot3.png" width="400">
+  <br>
+  <em>boot sequence 3</em>
+</p>
+
+<p align="center">
+  <img src="images/mqtt_pub.png" width="400">
+  <br>
+  <em>Sensor (BME280) readings sent over MQTT</em>
+</p>
+
+<p align="center">
+  <img src="images/aws-iot-conn.png" width="400">
+  <br>
+  <em>AWS succesful receipt of heartbeat message</em>
 </p>
 
 ## Project Overview
@@ -187,7 +263,7 @@ This policy allows:
    - Keep AmazonRootCA1.pem as is
 2. Place all three files in the `certificates` directory
 
-IMPORTANT NOTE: Those certificates should be placed inside the ./certicates folder. To start with, just rename them to AmazonRootCA1.pem, new_certificate.pem, and new_private.key accordingly. After you familiarize your self, you can play with the names. THIS IS A TRICKY PART, the mqtt.c has some conventions to read those files, like for example in
+IMPORTANT NOTE: Those certificates should be placed inside the ./certificates folder. To start with, just rename them to AmazonRootCA1.pem, new_certificate.pem, and new_private.key accordingly. After you familiarize your self, you can play with the names. THIS IS A TRICKY PART, the mqtt.c has some conventions to read those files, like for example in
 
 ```c
         .credentials = {
@@ -299,6 +375,9 @@ idf.py -p [PORT] flash
 
 # Monitor serial output (replace [PORT] with your device's COM port)
 idf.py -p [PORT] monitor
+
+# or combine 2 to 1
+idf.py -p [PORT] flash monitor
 ```
 
 ## Debugging Tips

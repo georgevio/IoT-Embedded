@@ -1,5 +1,9 @@
 # Ignore secrets file
 secrets.h
+secret.h # just in case 
+
+# Ignore all *.lock files
+*.lock
 
 # Prerequisites
 *.d

@@ -1,7 +1,7 @@
 
 # ESP-IDF Projects
 
-This directory contains various projects designed to run on Espressif microcontrollers using the ESP-IDF framework. Each project is configured to work seamlessly with `idf.py` and incorporates dependencies from Espressif's libraries.
+Projects designed to run on Espressif microcontrollers using the ESP-IDF framework. Each project is configured to work with `idf.py` and dependencies from Espressif's libraries.
 
 ## Getting Started
 
@@ -13,7 +13,7 @@ Ensure you have the following installed on your system:
 - [ESP-IDF](https://github.com/espressif/esp-idf) (version 4.2 or higher is recommended)
 - Python 3.7 or later
 - Git
-- CMake and Ninja build tools
+- CMake and Ninja build tools, they will be automatically available inside the cmd/powershell window of ESP-IDF.
 
 ### Initial Setup
 
@@ -33,6 +33,7 @@ Ensure you have the following installed on your system:
    ```
    - Use this tool to configure project-specific parameters, such as flash memory settings, PSRAM, Wi-Fi credentials, etc.
    - For certain projects (e.g., camera-based projects), enable PSRAM in the `menuconfig`, and set Flash and PSRAM frequencies to 80 MHz.
+   - You might need to redo this, every time you add a new module, for example esp-camera.
 
 ### Building and Flashing
 
@@ -49,6 +50,8 @@ Ensure you have the following installed on your system:
 3. Monitor the serial output:
    ```bash
    idf.py monitor
+   # or combine the commands
+   idf.py -p COMXX flash monitor
    ```
 
    Press `Ctrl+]` to exit the monitor.
@@ -68,14 +71,15 @@ Refer to the individual project's `CMakeLists.txt` files for specific dependenci
 ## Projects Overview
 
 ### 1. ESP32-CAM
-- **Description**: This project enables the use of the ESP32-CAM module for capturing images and streaming video.
+- **Description**: This project is basic for the ESP32-CAM module for capturing images and streaming video. Start with this project to make sure that your camera is ok. When you first connect the camera, is better to test it with the arduino code in the folder IoT-Embedded/arduino/* .
 - **Key Configurations**:
   - Ensure PSRAM is enabled.
   - Include the `esp32-camera` driver in the project dependencies.
 - **Project Structure**:
   ```
   esp32-cam/
-  ├── main/                     # Main application code
+  ├── main/                     # Main application code. 
+  |   --secret.h                # insert the wifi credentials (gitignored)
   ├── managed_components/       # External libraries/components
   ├── sdkconfig.txt             # Default configuration file
   └── CMakeLists.txt            # Build configuration

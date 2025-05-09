@@ -5,6 +5,7 @@ secret.h
 build/
 sdkconfig
 components/*/build/
+managed_components/
 
 # Generated files
 *.bin

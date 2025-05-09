@@ -1,6 +1,9 @@
 # secret.h file - store credentials, wifi passwords, etc.
 secret.h
 
+# dependencies.lock is a local file, right?
+*.lock
+
 # ESP-IDF build output
 build/
 sdkconfig

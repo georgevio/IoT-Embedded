@@ -1,0 +1,45 @@
+# secret.h file - store credentials, wifi passwords, etc.
+secret.h
+
+# ESP-IDF build output
+build/
+sdkconfig
+components/*/build/
+
+# Generated files
+*.bin
+*.elf
+*.map
+*.hex
+*.obj
+*.lst
+*.srec
+
+# CMake related files/directories
+CMakeCache.txt
+CMakeFiles/
+compile_commands.json
+
+# Python virtual environment (if used)
+.venv/
+env/
+venv/
+
+# PlatformIO related files/directories (if used)
+.pioenvs/
+.piolibdeps/
+platformio.ini
+
+# Eclipse CDT project files (if used)
+.cproject
+.project
+
+# Visual Studio Code files (if used)
+.vscode/
+
+# Other common ignore patterns
+.DS_Store       # macOS folder attributes
+Thumbs.db       # Windows folder attributes
+*.log
+*.bak
+*.swp

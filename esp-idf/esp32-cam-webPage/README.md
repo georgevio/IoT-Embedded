@@ -2,11 +2,11 @@
 
 This project implements a minimal web server on an **ESP32-CAM** module that provides live streaming as well as a static image capture feature. The application is using the ESP-IDF framework and provides a simple HTML interface to view the camera feed.
 
-<img src="images/cam.jpg" alt="ESP32-CAM Module" width="350">
+<img src="images/cam.jpg" alt="ESP32-CAM Module" width="450">
 
-<img src="images/serial1.png" alt="Serial Output Module" width="350">
+<img src="images/serial1.png" alt="Serial Output Module" width="450">
 
-<img src="images/stream1.png" alt="Stream - Web Output" width="350">
+<img src="images/stream1.png" alt="Stream - Web Output" width="450">
 
 ---
 

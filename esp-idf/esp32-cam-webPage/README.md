@@ -8,6 +8,8 @@ This project implements a minimal web server on an **ESP32-CAM** module that pro
 
 <img src="images/stream1.png" alt="Stream - Web Output" width="450">
 
+[![Watch a video](https://img.youtube.com/vi/dQw4w9WgXcQ/0.jpg)](https://youtu.be/kzLEHtOoujQ)
+
 ---
 
 ## 🛠️ **Features**

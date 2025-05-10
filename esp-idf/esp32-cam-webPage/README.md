@@ -9,6 +9,7 @@ This project implements a minimal web server on an **ESP32-CAM** module that pro
 <img src="images/stream1.png" alt="Stream - Web Output" width="450">
 
 Click to watch a small video (youtube)
+
 [![Watch a video](https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_of_YouTube_%282015-2017%29.svg/330px-Logo_of_YouTube_%282015-2017%29.svg.png)](https://youtu.be/kzLEHtOoujQ)
 
 ---

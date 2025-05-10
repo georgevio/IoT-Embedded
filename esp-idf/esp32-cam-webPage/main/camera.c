@@ -4,7 +4,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_psram.h" 
-
+#include "esp_camera.h"
 static const char *TAG_CAMERA = "CAMERA";
 
 // Camera Pin Definitions (AI-Thinker ESP32-CAM)
@@ -25,6 +25,8 @@ static const char *TAG_CAMERA = "CAMERA";
 #define VSYNC_GPIO_NUM    25
 #define HREF_GPIO_NUM     23
 #define PCLK_GPIO_NUM     22
+
+#define LED_GPIO 4  // ESP32-CAM onboard LED
 
 //esp_err_t // is there a need to return the error?
 void camera_init() {
@@ -92,6 +94,14 @@ void camera_init() {
         //return err;
     }
     ESP_LOGI(TAG_CAMERA, "Camera component initialized.");
+    // Configure LED GPIO as output
+    esp_rom_gpio_pad_select_gpio(LED_GPIO);
+    gpio_set_direction(LED_GPIO, GPIO_MODE_OUTPUT);
+    // Turn on LED momentarily
+    gpio_set_level(LED_GPIO, 1);
+    vTaskDelay(pdMS_TO_TICKS(1000));  // Delay for 1 second
+    gpio_set_level(LED_GPIO, 0);
+    
     //return ESP_OK;
 }
 

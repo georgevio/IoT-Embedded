@@ -3,6 +3,7 @@
 #include "esp_log.h"
 #include "esp_http_server.h"
 #include <string.h>
+#include "debug.h"  // Include centralized debug management
 
 static const char *TAG_HTTP = "HTTP";
 
@@ -20,7 +21,7 @@ static esp_err_t jpg_capture_handler(httpd_req_t *req) {
     esp_err_t ret = camera_capture(&frame_buffer);
     
     if (ret != ESP_OK || !frame_buffer) {
-        ESP_LOGE(TAG_HTTP, "Failed to capture frame");
+        DEBUG_PRINT(TAG_HTTP, "Failed to capture frame");
         httpd_resp_send_500(req);
         return ESP_FAIL;
     }
@@ -46,7 +47,7 @@ static esp_err_t jpg_stream_handler(httpd_req_t *req) {
         esp_err_t ret = camera_capture(&frame_buffer);
         
         if (ret != ESP_OK || !frame_buffer) {
-            ESP_LOGE(TAG_HTTP, "Failed to capture frame");
+            DEBUG_PRINT(TAG_HTTP, "Failed to capture frame");
             httpd_resp_send_500(req);
             return ESP_FAIL;
         }
@@ -56,7 +57,7 @@ static esp_err_t jpg_stream_handler(httpd_req_t *req) {
                                   boundary, frame_buffer->len);
         
         if (header_len >= sizeof(part_buf)) {
-            ESP_LOGE(TAG_HTTP, "Header buffer overflow");
+            DEBUG_PRINT(TAG_HTTP, "Header buffer overflow");
             camera_fb_return(frame_buffer);
             continue;
         }
@@ -105,14 +106,14 @@ static esp_err_t index_html_handler(httpd_req_t *req) {
  * @brief Initialize the HTTP server.
  */
 void start_webserver(void) {
-    ESP_LOGI(TAG_HTTP, "Starting HTTP server...");
+    DEBUG_PRINT(TAG_HTTP, "Starting HTTP server...");
 
     httpd_config_t config = HTTPD_DEFAULT_CONFIG();
     config.task_priority = tskIDLE_PRIORITY + 1;
 
     esp_err_t err = httpd_start(&server_handle, &config);
     if (err == ESP_OK) {
-        ESP_LOGI(TAG_HTTP, "HTTP server started.");
+        DEBUG_PRINT(TAG_HTTP, "HTTP server started.");
 
         httpd_uri_t index_uri = {
             .uri = "/",
@@ -139,6 +140,6 @@ void start_webserver(void) {
         httpd_register_uri_handler(server_handle, &stream_uri);
 
     } else {
-        ESP_LOGE(TAG_HTTP, "Failed to start HTTP server: %s", esp_err_to_name(err));
+        DEBUG_PRINT(TAG_HTTP, "Failed to start HTTP server: %s", esp_err_to_name(err));
     }
 }

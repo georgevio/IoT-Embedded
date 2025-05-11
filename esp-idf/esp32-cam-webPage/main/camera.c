@@ -3,8 +3,10 @@
 #include "driver/gpio.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "esp_psram.h" 
+#include "esp_psram.h"
 #include "esp_camera.h"
+#include "debug.h"  // Include centralized debug management
+
 static const char *TAG_CAMERA = "CAMERA";
 
 // Camera Pin Definitions (AI-Thinker ESP32-CAM)
@@ -28,10 +30,9 @@ static const char *TAG_CAMERA = "CAMERA";
 
 #define LED_GPIO 4  // ESP32-CAM onboard LED
 
-//esp_err_t // is there a need to return the error?
 void camera_init() {
     if (PWDN_GPIO_NUM != -1) {
-        ESP_LOGI(TAG_CAMERA, "Toggling PWDN pin (%d)", PWDN_GPIO_NUM);
+        DEBUG_PRINT(TAG_CAMERA, "Toggling PWDN pin (%d)", PWDN_GPIO_NUM);
         gpio_config_t conf = {0};
         conf.pin_bit_mask = 1LL << PWDN_GPIO_NUM;
         conf.mode = GPIO_MODE_OUTPUT;
@@ -43,7 +44,7 @@ void camera_init() {
     }
 
 #if RESET_GPIO_NUM != -1
-    ESP_LOGI(TAG_CAMERA, "Toggling RESET pin (%d)", RESET_GPIO_NUM);
+    DEBUG_PRINT(TAG_CAMERA, "Toggling RESET pin (%d)", RESET_GPIO_NUM);
     gpio_config_t conf = {0};
     conf.pin_bit_mask = 1LL << RESET_GPIO_NUM;
     conf.mode = GPIO_MODE_OUTPUT;
@@ -56,7 +57,8 @@ void camera_init() {
 
     size_t psram_size = esp_psram_get_size();
     bool psramAvailable = (psram_size > 0);
-    ESP_LOGI(TAG_CAMERA, "PSRAM available: %s, Size: %zu bytes", psramAvailable ? "Yes" : "No", psram_size);
+    
+    DEBUG_PRINT(TAG_CAMERA, "PSRAM available: %s, Size: %zu bytes", psramAvailable ? "Yes" : "No", psram_size);
 
     camera_config_t camera_config = {
         .pin_pwdn = PWDN_GPIO_NUM,
@@ -83,32 +85,30 @@ void camera_init() {
         .jpeg_quality = 15,
         .fb_count = 1,
         .fb_location = psramAvailable ? CAMERA_FB_IN_PSRAM : CAMERA_FB_IN_DRAM,
-        //.fb_count = psramAvailable ? 2 : 1,
-        //.fb_location = psramAvailable ? CAMERA_FB_IN_PSRAM : CAMERA_FB_IN_DRAM,
         .grab_mode = CAMERA_GRAB_LATEST
     };
 
     esp_err_t err = esp_camera_init(&camera_config);
     if (err != ESP_OK) {
-        ESP_LOGE(TAG_CAMERA, "Camera Init Failed: 0x%x (%s)", err, esp_err_to_name(err));
-        //return err;
+        DEBUG_PRINT(TAG_CAMERA, "Camera Init Failed: 0x%x (%s)", err, esp_err_to_name(err));
     }
-    ESP_LOGI(TAG_CAMERA, "Camera component initialized.");
+
+    DEBUG_PRINT(TAG_CAMERA, "Camera component initialized.");
+
     // Configure LED GPIO as output
     esp_rom_gpio_pad_select_gpio(LED_GPIO);
     gpio_set_direction(LED_GPIO, GPIO_MODE_OUTPUT);
+    
     // Turn on LED momentarily
     gpio_set_level(LED_GPIO, 1);
     vTaskDelay(pdMS_TO_TICKS(1000));  // Delay for 1 second
     gpio_set_level(LED_GPIO, 0);
-    
-    //return ESP_OK;
 }
 
 esp_err_t camera_capture(camera_fb_t **frame_buffer) {
     *frame_buffer = esp_camera_fb_get();
     if (!*frame_buffer) {
-        ESP_LOGE(TAG_CAMERA, "Camera capture failed");
+        DEBUG_PRINT(TAG_CAMERA, "Camera capture failed");
         return ESP_FAIL;
     }
     return ESP_OK;

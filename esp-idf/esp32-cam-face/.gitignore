@@ -7,14 +7,12 @@ secret.h
 # e.g., cmd.lnk
 *.lnk
 
-# components directory excluded for now
-/components/
-
 # ESP-IDF build output
 build/
 sdkconfig
 sdkconfig.old
 components/*/build/
+components/
 managed_components/
 
 # Generated files

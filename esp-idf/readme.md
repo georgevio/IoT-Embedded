@@ -97,4 +97,4 @@ Refer to the individual project's `CMakeLists.txt` files for specific dependenci
   ```
 
 
-
+For specific project descriptions and updated details and isntructions, find the readme.md files inside each subdirectory.

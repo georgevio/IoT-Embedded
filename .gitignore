@@ -2,10 +2,11 @@
 secrets.h
 secret.h # just in case 
 
-# Ignore multi backup and test folders
+# Ignore multi backup, third_party libs and test folders
 BACKUP/
 test_codes/
 tests/
+third_party
 
 # Ignore all *.lock files
 *.lock

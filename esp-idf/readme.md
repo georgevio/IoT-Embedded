@@ -1,19 +1,15 @@
 
 # ESP-IDF Projects
 
-Projects designed to run on Espressif microcontrollers using the ESP-IDF framework. Each project is configured to work with `idf.py` and dependencies from Espressif's libraries.
-
-## Getting Started
-
-To set up and run the projects in this directory, follow the steps below.
+Projects designed to run on Espressif microcontrollers using the ESP-IDF framework. Each project is configured to work with `idf.py` and multiple dependencies from Espressif's libraries.
 
 ### Prerequisites
 
-Ensure you have the following installed on your system:
-- [ESP-IDF](https://github.com/espressif/esp-idf) (version 4.2 or higher is recommended)
+You should have the following installed on your system:
+- [ESP-IDF](https://github.com/espressif/esp-idf) (version 4.2 or higher is recommended, unless specifically instructed inside subdirectories)
 - Python 3.7 or later
 - Git
-- CMake and Ninja build tools, they will be automatically available inside the cmd/powershell window of ESP-IDF.
+- CMake and Ninja build tools, they will be automatically available inside the cmd/powershell window of ESP-IDF. NOTE: Make sure you install the ESP-IDF tools, and you execute idf.py ONLY WITHIN THE PROVIDED TERMINAL WINDOWS.
 
 ### Initial Setup
 
@@ -54,11 +50,11 @@ Ensure you have the following installed on your system:
    idf.py -p COMXX flash monitor
    ```
 
-   Press `Ctrl+]` to exit the monitor.
+   Use `Ctrl+]` to exit the monitor.
 
 ### Adding Dependencies
 
-Some projects may require additional components or libraries. To add these dependencies:
+Several projects require additional ESP-IDF components or libraries. To add them do:
 
 - Use the `idf.py add-dependency` command. For example:
   ```bash
@@ -71,7 +67,7 @@ Refer to the individual project's `CMakeLists.txt` files for specific dependenci
 ## Projects Overview
 
 ### 1. ESP32-CAM
-- **Description**: This project is basic for the ESP32-CAM module for capturing images and streaming video. Start with this project to make sure that your camera is ok. When you first connect the camera, is better to test it with the arduino code in the folder IoT-Embedded/arduino/* .
+- **Description**: Basic for the ESP32-CAM module for capturing images and streaming video. Start with this project to make sure that your camera is ok. When you first connect the camera, is better to test it with the arduino code in the folder IoT-Embedded/arduino/* .
 - **Key Configurations**:
   - Ensure PSRAM is enabled.
   - Include the `esp32-camera` driver in the project dependencies.
@@ -100,30 +96,5 @@ Refer to the individual project's `CMakeLists.txt` files for specific dependenci
   └── CMakeLists.txt            # Build configuration
   ```
 
-### 3. ESP-Face-Rec
-- **Description**: A facial recognition project for ESP32-S3 modules.
-- **Key Configurations**:
-  - Requires specific camera modules supported by the `esp32-camera` driver.
-  - Certificates for secure communication.
-
-## Configuration Details
-
-### MenuConfig Parameters
-- **PSRAM**:
-  - Ensure PSRAM is enabled for projects requiring large memory (e.g., camera-based projects).
-- **Wi-Fi and MQTT**:
-  - Configure Wi-Fi credentials and MQTT settings in the `menuconfig` or relevant header files.
-- **Debugging**:
-  - Enable necessary debugging options for development and troubleshooting.
-
-### Sensitive Information
-Store sensitive information (e.g., Wi-Fi credentials, AWS IoT keys) in a secure, gitignored location such as `credentials/secrets.h`.
-
-## Additional Notes
-
-- Refer to the [ESP-IDF documentation](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/) for detailed instructions and troubleshooting.
-- Ensure all dependencies are compatible with your ESP-IDF version.
-
----
 
 

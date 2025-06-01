@@ -10,7 +10,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_mac.h"
-#include "secret.h" // in .gitignore. Store credentials, wifi passwords, etc.
+#include "secret.h" // Contains WIFI_SSID and WIFI_PASSWORD
 
 // Camera Pin Definitions (AI-Thinker ESP32-CAM)
 /* NOTE: If the camera fails to initialize, it is because of the following 

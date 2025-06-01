@@ -1,0 +1,246 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32 WebSocket Client</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .log-area {
+            white-space: pre-wrap; /* Allows line breaks and preserves spaces */
+            word-wrap: break-word; /* Breaks long words to prevent overflow */
+            border: 1px solid #e2e8f0; /* Tailwind gray-300 */
+            padding: 0.75rem; /* Tailwind p-3 */
+            border-radius: 0.375rem; /* Tailwind rounded-md */
+            background-color: #f9fafb; /* Tailwind gray-50 */
+            height: 200px;
+            overflow-y: auto;
+        }
+
+        .status-dot {
+            height: 12px;
+            width: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        .status-connected {
+            background-color: #34d399;
+        }
+        /* Tailwind green-400 */
+        .status-disconnected {
+            background-color: #f87171;
+        }
+        /* Tailwind red-400 */
+        .status-connecting {
+            background-color: #fbbf24;
+        }
+        /* Tailwind amber-400 */
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="bg-white p-6 sm:p-8 rounded-lg shadow-xl w-full max-w-lg">
+        <h1 class="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-6">ESP32 WebSocket Test Client</h1>
+
+        <div class="mb-4 flex items-center">
+            <span id="statusDot" class="status-dot status-disconnected"></span>
+            <span id="connectionStatus" class="text-gray-700">Status: Disconnected</span>
+        </div>
+
+        <div class="mb-4">
+            <label for="serverUrl" class="block text-sm font-medium text-gray-700 mb-1">Server URL:</label>
+            <input type="text" id="serverUrl" value="ws://YOUR_ESP32_IP/ws"
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                   placeholder="ws://YOUR_ESP32_IP/ws">
+            <p class="text-xs text-gray-500 mt-1">Replace YOUR_ESP32_IP with the actual IP of your ESP32.</p>
+        </div>
+
+        <div class="flex space-x-3 mb-6">
+            <button id="connectButton"
+                    class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                Connect
+            </button>
+            <button id="disconnectButton"
+                    class="flex-1 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-150 ease-in-out"
+                    disabled>
+                Disconnect
+            </button>
+        </div>
+
+        <div class="mb-4">
+            <label for="messageInput" class="block text-sm font-medium text-gray-700 mb-1">Message to Send:</label>
+            <div class="flex space-x-3">
+                <input type="text" id="messageInput"
+                       class="flex-grow px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                       placeholder="Type your message here..." disabled>
+                <button id="sendButton"
+                        class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out"
+                        disabled>
+                    Send
+                </button>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label for="logArea" class="block text-sm font-medium text-gray-700 mb-1">Communication Log:</label>
+            <div id="logArea" class="log-area"></div>
+        </div>
+        <button id="clearLogButton"
+                class="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition duration-150 ease-in-out">
+            Clear Log
+        </button>
+    </div>
+
+    <script>
+        const serverUrlInput = document.getElementById('serverUrl');
+        const connectButton = document.getElementById('connectButton');
+        const disconnectButton = document.getElementById('disconnectButton');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const logArea = document.getElementById('logArea');
+        const clearLogButton = document.getElementById('clearLogButton');
+        const connectionStatus = document.getElementById('connectionStatus');
+        const statusDot = document.getElementById('statusDot');
+
+        let socket = null;
+
+        function logMessage(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            let prefix = '';
+            let colorClass = '';
+
+            switch (type) {
+                case 'sent':
+                    prefix = 'SENT';
+                    colorClass = 'text-blue-600';
+                    break;
+                case 'received':
+                    prefix = 'RECV';
+                    colorClass = 'text-green-600';
+                    break;
+                case 'error':
+                    prefix = 'ERROR';
+                    colorClass = 'text-red-600 font-semibold';
+                    break;
+                case 'status':
+                    prefix = 'STATUS';
+                    colorClass = 'text-purple-600';
+                    break;
+                default: // info
+                    prefix = 'INFO';
+                    colorClass = 'text-gray-600';
+            }
+            logEntry.innerHTML = `<strong>[${timestamp} ${prefix}]</strong> <span class="${colorClass}">${message}</span>`;
+            logArea.appendChild(logEntry);
+            logArea.scrollTop = logArea.scrollHeight; // Auto-scroll to bottom
+        }
+
+        function updateConnectionStatus(statusText, dotClass) {
+            connectionStatus.textContent = `Status: ${statusText}`;
+            statusDot.className = `status-dot ${dotClass}`;
+        }
+
+        connectButton.addEventListener('click', () => {
+            const url = serverUrlInput.value;
+            if (!url) {
+                logMessage('Server URL cannot be empty.', 'error');
+                return;
+            }
+
+            logMessage(`Attempting to connect to ${url}...`, 'status');
+            updateConnectionStatus('Connecting...', 'status-connecting');
+            socket = new WebSocket(url);
+
+            socket.onopen = (event) => {
+                logMessage('Connection established!', 'status');
+                updateConnectionStatus('Connected', 'status-connected');
+                connectButton.disabled = true;
+                serverUrlInput.disabled = true;
+                disconnectButton.disabled = false;
+                messageInput.disabled = false;
+                sendButton.disabled = false;
+            };
+
+            socket.onmessage = (event) => {
+                logMessage(event.data, 'received');
+            };
+
+            socket.onclose = (event) => {
+                let reason = '';
+                if (event.code) { // Check if event.code is defined
+                    if (event.code === 1000) {
+                        reason = 'Normal closure';
+                    } else if (event.code === 1001) {
+                        reason = 'Endpoint going away (e.g., server shutting down or browser navigating away)';
+                    } else if (event.code === 1006) {
+                        reason = 'Connection was closed abnormally (e.g., lost connection)';
+                    } else {
+                        reason = `Unknown close code: ${event.code}`;
+                    }
+                    if (event.reason) {
+                        reason += ` - Reason: ${event.reason}`;
+                    }
+                } else {
+                    reason = 'Connection closed without a code (likely an error or abnormal closure)';
+                }
+
+
+                logMessage(`Connection closed. ${reason}`, event.wasClean ? 'status' : 'error');
+                updateConnectionStatus('Disconnected', 'status-disconnected');
+                connectButton.disabled = false;
+                serverUrlInput.disabled = false;
+                disconnectButton.disabled = true;
+                messageInput.disabled = true;
+                sendButton.disabled = true;
+                socket = null;
+            };
+
+            socket.onerror = (error) => {
+                logMessage(`WebSocket Error: ${error.message || 'An unknown error occurred.'}`, 'error');
+                // onclose will usually be called after an error that closes the connection
+            };
+        });
+
+        disconnectButton.addEventListener('click', () => {
+            if (socket) {
+                logMessage('Disconnecting...', 'status');
+                socket.close(1000, "User initiated disconnect"); // Normal closure
+            }
+        });
+
+        sendButton.addEventListener('click', () => {
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                const message = messageInput.value;
+                if (message) {
+                    socket.send(message);
+                    logMessage(message, 'sent');
+                    messageInput.value = ''; // Clear input after sending
+                } else {
+                    logMessage('Cannot send an empty message.', 'info');
+                }
+            } else {
+                logMessage('Not connected. Cannot send message.', 'error');
+            }
+        });
+
+        messageInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter' && !sendButton.disabled) {
+                sendButton.click();
+            }
+        });
+
+        clearLogButton.addEventListener('click', () => {
+            logArea.innerHTML = '';
+            logMessage('Log cleared.', 'info');
+        });
+
+    </script>
+</body>
+</html>

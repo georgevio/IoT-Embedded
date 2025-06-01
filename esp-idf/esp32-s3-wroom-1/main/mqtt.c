@@ -2,7 +2,7 @@
  * @file mqtt.c
  * @brief MQTT client module implementation for AWS IoT
  * 
- * Handles MQTT client initialization, connection, and publishing to AWS IoT.
+ * MQTT client initialization, connection, and publishing to AWS IoT.
  */
 
 #include <stdio.h>

@@ -1,0 +1,1 @@
+DONT FORGET: idf.py menuconfig --> HTTP Server --> WebSocket server support (*)

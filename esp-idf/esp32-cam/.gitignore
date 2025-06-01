@@ -6,9 +6,7 @@ secret.h
 
 # ESP-IDF build output
 build/
-sdkconfig
 components/*/build/
-managed_components/
 
 # Generated files
 *.bin

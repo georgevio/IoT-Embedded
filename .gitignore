@@ -8,6 +8,7 @@ BACKUP/
 test_codes/
 tests/
 third_party/
+certificates/
 
 # Ignore all *.lock files
 *.lock

@@ -2,7 +2,7 @@
 
 ESP32 application with WiFi, WebSocket server, and MQTT client for AWS IoT. It is provides modularity, so you can enable/disable functionalities.
 
-```
+```mermaid
 graph LR;
     subgraph "Local WiFi"
         direction TB

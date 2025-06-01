@@ -120,7 +120,7 @@ static esp_err_t bme280_read_reg(uint8_t reg_addr, uint8_t *data, size_t len)
         ESP_LOGE(TAG, "Failed to read register 0x%02x: %s", reg_addr, esp_err_to_name(ret));
     }
     
-    // Add a small delay between I2C operations to prevent bus flooding
+    // Add delay between I2C operations to prevent bus flooding
     vTaskDelay(1 / portTICK_PERIOD_MS);
     
     return ret;
@@ -152,7 +152,7 @@ static esp_err_t bme280_read_reg(uint8_t reg_addr, uint8_t *data, size_t len)
      esp_err_t ret;
      uint8_t reg_data;
      
-     // Read each calibration register individually rather than in blocks
+     // Read each calibration register individually
      // Temperature trimming parameters
      uint8_t temp_msb, temp_lsb;
      
@@ -183,7 +183,7 @@ static esp_err_t bme280_read_reg(uint8_t reg_addr, uint8_t *data, size_t len)
      
      calib_data.dig_T3 = (int16_t)((temp_msb << 8) | temp_lsb);
      
-     // Pressure trimming parameters (read a few to test)
+	 // Pressure trimming parameters (read a few to test). Compare with others for reliability!
      // Read P1 (2 bytes at 0x8E and 0x8F)
      ret = bme280_read_reg(0x8E, &temp_lsb, 1);
      if (ret != ESP_OK) return ret;
@@ -238,7 +238,7 @@ static esp_err_t bme280_read_reg(uint8_t reg_addr, uint8_t *data, size_t len)
      
      calib_data.dig_H6 = (int8_t)reg_data;
      
-     // Print the calibration values we read successfully
+     // Print the calibration values read successfully
      ESP_LOGI(TAG, "Calibration data read (partial): T1=%u, T2=%d, T3=%d, P1=%u, H1=%u", 
               calib_data.dig_T1, calib_data.dig_T2, calib_data.dig_T3, 
               calib_data.dig_P1, calib_data.dig_H1);
@@ -247,7 +247,7 @@ static esp_err_t bme280_read_reg(uint8_t reg_addr, uint8_t *data, size_t len)
               calib_data.dig_H1, calib_data.dig_H2, calib_data.dig_H3,
               calib_data.dig_H4, calib_data.dig_H5, calib_data.dig_H6);
      
-     // For now, just to get temperature working, let's use typical values if T1 is zero
+     // Get temperature working, set values if T1 is zero
      if (calib_data.dig_T1 == 0) {
          ESP_LOGW(TAG, "Using default calibration values for temperature");
          calib_data.dig_T1 = 27504;  // Typical value
@@ -257,10 +257,6 @@ static esp_err_t bme280_read_reg(uint8_t reg_addr, uint8_t *data, size_t len)
      
      return ESP_OK;
  }
-
-
-
-
 
  // Compensate temperature reading based on calibration data
  static float bme280_compensate_temperature(int32_t adc_T)
@@ -338,7 +334,7 @@ static esp_err_t bme280_read_reg(uint8_t reg_addr, uint8_t *data, size_t len)
          return ret;
      }
      
-     // Check chip ID - try both common I2C addresses
+     // Check chip ID DYNAMICALLY - try both common I2C addresses
      uint8_t chip_id = 0;
      uint8_t addresses[] = {0x77, 0x76};  // Try both common addresses
      bool sensor_found = false;
@@ -369,7 +365,6 @@ static esp_err_t bme280_read_reg(uint8_t reg_addr, uint8_t *data, size_t len)
          return ESP_ERR_NOT_FOUND;
      }
      
-     // Rest of the initialization code remains the same...
      // Reset the sensor
      ret = bme280_write_reg(BME280_REG_RESET, 0xB6);
      if (ret != ESP_OK) return ret;
@@ -381,7 +376,7 @@ static esp_err_t bme280_read_reg(uint8_t reg_addr, uint8_t *data, size_t len)
      ret = bme280_read_calibration_data();
      if (ret != ESP_OK) return ret;
      
-     // Configure the sensor
+     /* Configure the sensor*/
      // Set humidity oversampling to 1x
      ret = bme280_write_reg(BME280_REG_CTRL_HUM, 0x01);
      if (ret != ESP_OK) return ret;
@@ -447,7 +442,7 @@ static esp_err_t bme280_read_reg(uint8_t reg_addr, uint8_t *data, size_t len)
      while (1) {
          // Read BME280 data
          if (bme280_read_data(&reading) == ESP_OK) {
-             // If MQTT is connected, publish the data
+             // Only if MQTT is connected, try to publish the data
              if (mqtt_is_connected()) {
                  // Format and publish all readings in a single JSON message
                  snprintf(mqtt_data, sizeof(mqtt_data), 
@@ -457,7 +452,7 @@ static esp_err_t bme280_read_reg(uint8_t reg_addr, uint8_t *data, size_t len)
                  ESP_LOGI(TAG, "Publishing to topic %s: %s", MQTT_TOPIC_BME280, mqtt_data);
                  mqtt_publish_message(mqtt_client, MQTT_TOPIC_BME280, mqtt_data, 0, 0);
                  
-                 // Also publish individual readings to separate topics for easier parsing
+                 // publish individual readings to separate topics as well for easier parsing
                  snprintf(mqtt_data, sizeof(mqtt_data), "%.2f", reading.temperature);
                  ESP_LOGI(TAG, "Publishing to topic %s/temperature: %s", MQTT_TOPIC_BME280, mqtt_data);
                  mqtt_publish_message(mqtt_client, MQTT_TOPIC_BME280 "/temperature", mqtt_data, 0, 0);
@@ -524,7 +519,7 @@ static esp_err_t bme280_read_reg(uint8_t reg_addr, uint8_t *data, size_t len)
          return ESP_OK;
      }
      
-     // Delete the task
+	 // Delete the task at the end of execution
      vTaskDelete(bme280_task_handle);
      bme280_task_handle = NULL;
      

@@ -30,7 +30,7 @@ esp_err_t mqtt_start(esp_mqtt_client_handle_t client);
  * @brief Publish message to a specific topic
  * 
  * @param client MQTT client handle
- * @param topic MQTT topic to publish to
+ * @param topic MQTT topic to publish to. Make sure it is valid in the MQTT broker (AWS)
  * @param data Data to publish
  * @param qos Quality of Service (0, 1, or 2)
  * @param retain Retain flag

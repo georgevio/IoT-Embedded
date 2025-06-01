@@ -2,7 +2,7 @@
  * @file main.c
  * @brief Main application entry point
  * 
- * Initializes and coordinates the different modules based on configuration.
+ * Initialize and coordinate mutliple modules (ON/OFF based on config.h).
  */
 
  #include <stdio.h>
@@ -92,14 +92,14 @@
              ESP_LOGE(TAG, "Failed to initialize BME280");
          }
      }
-     
-     // Main loop - publish messages periodically if not using BME280
+
+     // Main loop - publish only heartbeat  periodically if not using BME280
      // If BME280 is enabled, it handles its own publishing
      while (1) {
          if (MQTT_ENABLED && mqtt_client != NULL && mqtt_is_connected() && !BME280_ENABLED) {
              ESP_LOGI(TAG, "Publishing heartbeat message to AWS IoT...");
              
-             // Example publishing for default topic
+			 // Example publishing for default topic, check AWS IoT topics and rights
              mqtt_publish_message(mqtt_client, MQTT_TOPIC_DEVICE, "esp32-heartbeat", 0, 0);
          }
          

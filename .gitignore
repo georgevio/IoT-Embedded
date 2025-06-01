@@ -1,13 +1,13 @@
 
-# Ignore secrets file
+# Ignore secret(s) file
 secrets.h
-secret.h # just in case 
+secret.h  
 
 # Ignore multi backup, third_party libs and test folders
 BACKUP/
 test_codes/
 tests/
-third_party
+third_party/
 
 # Ignore all *.lock files
 *.lock

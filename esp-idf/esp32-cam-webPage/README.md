@@ -1,6 +1,6 @@
 # ESP32-CAM Web Server with Live Streaming and Static Image Capture
 
-This project implements a minimal web server on an **ESP32-CAM** module that provides live streaming as well as a static image capture feature. The application is using the ESP-IDF framework and provides a simple HTML interface to view the camera feed.
+This project implements a minimal web server on an **ESP32-CAM** module that provides live streaming as well as a static image capture feature. The application is using the ESP-IDF framework and opens an HTML interface to view the camera feed (Enable stream).
 
 <img src="images/cam.jpg" alt="ESP32-CAM Module" width="450">
 
@@ -53,6 +53,8 @@ Click to watch a small video (youtube)
 - USB to TTL Converter  
 - WiFi Credentials  
 
+- IMPORTANT: Run the project configuration utility: idf.py menuconfig
+	Component config ---> ESP PSRAM --->Enable "Support for external, SPI-connected RAM".
 ---
 
 ### **1. Cloning the Repository**

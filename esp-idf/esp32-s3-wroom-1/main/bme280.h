@@ -23,7 +23,7 @@ typedef struct {
 /**
  * @brief Initialize BME280 sensor
  * 
- * @return ESP_OK on success, appropriate error code otherwise
+ * @return ESP_OK on success, specific error code otherwise
  */
 esp_err_t bme280_init(void);
 

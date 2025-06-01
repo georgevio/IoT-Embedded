@@ -1,0 +1,67 @@
+From AI
+
+Partition Tables:
+ESP-IDF uses a partition table to define how to divide the flash memory (for bootloader, application, NVS, PHY data, OTA partitions if used, etc.).
+
+Choose or Create a Larger Partition Table:
+ESP-IDF comes with several pre-defined partition table .csv files, or you can create a custom one.
+
+Go to idf.py menuconfig
+Navigate to Partition Table ---> (X) Partition Table (.csv/.bin file)
+Below that, find (partitions.csv) Partition table CSV file name.
+
+ESP-IDF provides options like:
+partitions_singleapp.csv (default, often 1MB app)
+partitions_singleapp_large.csv (might offer 2MB or more for the app)
+partitions_two_ota.csv (for Over-The-Air updates, usually two large app partitions)
+You need to select a partition table that gives more than ~1.44MB to the factory app partition.
+
+Option A: Use a pre-defined larger app partition:
+
+In menuconfig under Partition Table, try changing the Partition table CSV file name to one that sounds larger, like partitions_singleapp_large.csv (if available) or one of the OTA options if you plan for OTA later (e.g., partitions_two_ota.csv, which might give around 1.9MB per app slot).
+The sizes are defined in the .csv files, in $IDF_PATH/components/partition_table/. For example, a common partitions_two_ota.csv might define ota_0 and ota_1 each with 1920K (1.9MB) or 2M. ota_0 for the factory app.
+
+Option B: Create/Modify a Custom Partition Table CSV:
+
+If no pre-defined table suits you perfectly, you can copy one (e.g., partitions_singleapp.csv from $IDF_PATH/components/partition_table/) into the root of your project (C:\IoT-Embedded\esp-idf\3-Level-Cloud\esp32-face-detect\).
+Rename it (e.g., my_partitions.csv).
+Edit my_partitions.csv with a text editor. It's a comma-separated values file:
+Code snippet
+
+# Name,   Type, SubType, Offset,  Size,   Flags
+nvs,      data, nvs,     0x9000,  0x6000,
+phy_init, data, phy,     0xf000,  0x1000,
+factory,  app,  factory, 0x10000, 0x100000,  <-- Change this size
+You need to change 0x100000 (1MB) to something larger, e.g., 0x180000 (1.5MB) or 0x200000 (2MB), making sure it doesn't overlap with other partitions and stays within your flash chip's total size (you have 4MB). For example, to make it 2MB:
+Code snippet
+
+# Name,   Type, SubType, Offset,  Size,   Flags
+nvs,      data, nvs,     0x9000,  0x6000,
+phy_init, data, phy,     0xf000,  0x1000,
+factory,  app,  factory, 0x10000, 0x200000,  <-- Changed to 2MB
+Then, in idf.py menuconfig ---> Partition Table ---> Partition table CSV file name, enter your custom file name (e.g., my_partitions.csv).
+Important: When you change partition layouts, offsets of subsequent partitions might also need adjustment if you're not careful or if you're adding new partitions. For simply increasing the factory app size and if it's the last main partition, it's usually straightforward.
+After changing the partition table setting in menuconfig:
+
+Save and exit menuconfig.
+The build system will detect the change.
+Run idf.py build again, and then idf.py flash monitor. A partition table change requires re-flashing the entire device, including the new partition table.
+
+Recommendation:
+Try selecting partitions_two_ota.csv in menuconfig first. This often provides two app slots of around 1.9MB each. Your factory app will go into the first one (ota_0). This is usually sufficient and a good setup if you ever want to implement OTA updates.
+
+In this case, app type partition in the CSV would be ota_0 instead of factory.
+
+Example partitions_two_ota.csv:
+
+# Name,   Type, SubType, Offset,  Size, Flags
+nvs,      data, nvs,     0x9000,  0x6000,
+otadata,  data, ota,     0xf000,  0x2000,
+phy_init, data, phy,     0x11000, 0x1000,
+ota_0,    app,  ota_0,   0x20000, 1920K,  <--  app goes here
+ota_1,    app,  ota_1,   ,        1920K,
+(Offsets and sizes can vary slightly between IDF versions or default configurations).
+
+The "Size" of the app partition (factory or ota_0) has to be > 0x160a20.
+Size of 1920K or 2M (0x200000) is enough.
+If the flash size is 4MB, then 2MB app partition is ok.

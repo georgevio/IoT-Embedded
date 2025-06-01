@@ -1,0 +1,45 @@
+run idf.py menuconfig
+
+From GEMINI AI:
+specific sub-menus within Component config:
+
+For CPU Frequency:
+
+Scroll down and look for an entry that is CPU Frequency or CPU Core Configuration. This is often a top-level item within Component config or sometimes under Common ESP-related or System settings.
+Correction from typical IDF structure: In modern IDF versions (like your v5.4.1), CPU frequency is usually at the top level of menuconfig, not under Component config. So, go back to the main menuconfig screen (press Escape if you're deep in a sub-menu) and look for CPU frequency (160 MHz) or similar. Select it.
+Inside, choose (X) 240 MHz.
+For PSRAM Configuration:
+
+Back on the main Component config screen (or navigate to it), scroll down and look for: ESP PSRAM --->
+Select this.
+Inside, make sure these are enabled (look for [*], which means selected):
+[*] Support for external, SPI-connected RAM (This is CONFIG_ESP32_SPIRAM_SUPPORT)
+[*] Initialize SPI RAM when booting the ESP32
+SPI RAM config --->
+[*] Try to allocate memory from PSRAM first
+
+For Flash Configuration (this is also usually at the top level, not under Component Config): Go to the main menuconfig screen. Look for: Serial flasher config --->
+Inside, set:
+
+Flash SPI mode (DIO) ---> Change this to (X) Quad I/O (QIO) (If your board definitely uses QIO. If you encounter instability later, QOUT can be a fallback, but QIO is common for ESP-WHO compatible boards).
+Flash SPI speed (40 MHz) ---> Change this to (X) 80 MHz.
+Flash size (2 MB) ---> Change this to your actual flash chip size. Since your log said "Detected size(4096k)", choose (X) 4 MB. If you are absolutely sure it's larger (e.g., 8MB or 16MB), select that, but 4MB is a safe bet if the bootloader sees 4MB for partitioning.
+
+CPU Frequency: At the top level of menuconfig.
+CPU frequency (160 MHz) ---> Change to (X) 240 MHz.
+
+Flash Configuration: At the top level of menuconfig.
+
+Serial flasher config --->
+Flash SPI mode (DIO) ---> (X) Quad I/O (QIO)
+Flash SPI speed (40 MHz) ---> (X) 80 MHz
+Flash size (2 MB) ---> (X) 4 MB (or your actual chip size)
+PSRAM Configuration: This one is under Component config.
+
+Component config ---> Scroll down to ESP PSRAM --->
+
+[*] Support for external, SPI-connected RAM
+[*] Initialize SPI RAM when booting the ESP32
+SPI RAM config --->
+[*] Try to allocate memory from PSRAM first (often called Make RAM allocatable using malloc() and free())
+(Optional, usually default is fine) SPI RAM clock speed can be checked here too.

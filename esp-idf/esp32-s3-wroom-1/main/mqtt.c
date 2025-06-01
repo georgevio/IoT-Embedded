@@ -20,10 +20,10 @@
 static const char *TAG = "MQTT";
 static bool mqtt_connected_status = false;
 
-// Embedded certificate symbols - Referenced from original main.c
-extern const char _binary_AmazonRootCA1_pem_start[] asm("_binary_AmazonRootCA1_pem_start");
-extern const char _binary_new_certificate_pem_start[] asm("_binary_new_certificate_pem_start");
-extern const char _binary_new_private_key_start[] asm("_binary_new_private_key_start");
+// certificates mentioned in the CMakeLists.txt
+extern const char _binary_AmazonRootCA1_pem_start[]; // asm("_binary_AmazonRootCA1_pem_start");
+extern const char _binary_new_certificate_pem_start[]; // asm("_binary_new_certificate_pem_start");
+extern const char _binary_new_private_key_start[]; // asm("_binary_new_private_key_start");
 
 static void (*connection_state_callback)(bool connected, esp_mqtt_client_handle_t client) = NULL;
 
@@ -47,7 +47,7 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
             char init_message[256];
             char client_id[64];
             
-            // Get the client ID - using the config value or MAC address as fallback
+            // Get the client ID - Config value or MAC address as fallback
             #ifdef AWS_IOT_CLIENT_ID
                 snprintf(client_id, sizeof(client_id), "%s", AWS_IOT_CLIENT_ID);
             #else
@@ -82,10 +82,8 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
             if (connection_state_callback != NULL) {
                 connection_state_callback(false, client);
             }
-            
             break;
             
-        // Rest of the handler remains unchanged
         case MQTT_EVENT_PUBLISHED:
             ESP_LOGI(TAG, "MQTT message published, msg_id=%d", event->msg_id);
             break;

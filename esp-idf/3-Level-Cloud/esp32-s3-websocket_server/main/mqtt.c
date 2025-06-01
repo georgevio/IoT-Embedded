@@ -11,10 +11,12 @@
 #include <string.h>
 #include "esp_system.h"
 #include "esp_log.h"
-
+#include "esp_timer.h"
+#include "esp_mac.h"
 #include "mqtt.h"
 #include "config.h"
-#include "esp_timer.h"
+#include "secret.h" // Contains AWS_IOT_ENDPOINT, AWS_IOT_CLIENT_ID, MQTT_TOPIC_BASE
+
 
 static const char *TAG = "MQTT";
 static bool mqtt_connected_status = false;

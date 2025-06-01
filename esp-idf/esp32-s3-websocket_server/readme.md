@@ -2,6 +2,34 @@
 
 ESP32 application with WiFi, WebSocket server, and MQTT client for AWS IoT. It is provides modularity, so you can enable/disable functionalities.
 
+```
+graph LR;
+    subgraph "Local WiFi"
+        direction TB
+        ED1[Edge Device 1] -- Data --> WS_Server;
+        ED2[Edge Device 2] -- Data --> WS_Server;
+        EDN[... Other Edge Devices ...] -- Data --> WS_Server;
+        WS_Server[ESP32-S3 WROOM-1 - WebSocket Server];
+    end
+
+    subgraph "Internet / Cloud"
+        direction TB
+        MQTT_Client[ESP32-S3 WROOM-1 - MQTT Client];
+        AWS_IoT[AWS IoT Core - MQTT Broker];
+    end
+
+    WS_Server -- Processes Data & Forwards --> MQTT_Client;
+    MQTT_Client -- Data via MQTT --> AWS_IoT;
+
+    classDef edgeDevice fill:#DDEBF7,stroke:#5B9BD5,stroke-width:2px;
+    classDef esp32Device fill:#E2F0D9,stroke:#70AD47,stroke-width:2px;
+    classDef cloudService fill:#FFF2CC,stroke:#FFC000,stroke-width:2px;
+
+    class ED1,ED2,EDN edgeDevice;
+    class WS_Server,MQTT_Client esp32Device;
+    class AWS_IoT cloudService;
+```
+
 <img src="pics/websocket_cl1.png" alt="websocket clinet 1" width="650">
 
 <img src="pics/websocket_cl2.png" alt="websocket clinet 1" width="650">

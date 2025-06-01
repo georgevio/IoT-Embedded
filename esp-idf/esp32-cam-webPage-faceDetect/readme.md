@@ -6,11 +6,14 @@ Web-based face detection using the ESP32-CAM module. You can view the live strea
 
 This project is largely based on the original example from Espressif's ESP-WHO framework, with some modifications for debugging.
 
+IMPORTANT: Run the project configuration utility: idf.py menuconfig
+	Component config ---> ESP PSRAM --->Enable "Support for external, SPI-connected RAM".
+	
 ## Based On
 
 * **ESP-IDF Framework** (v5.4.1)
 * **ESP-WHO Framework, specifically version 1.1.0.** IMPORTANT: Newer versions do not seem to work with ESP32-CAM.
-    The core logic is found in `human_face_detection/web` in ESP-WHO v1.1.0. This version has ESP32-CAM face detection.
+    The core logic is found in `human_face_detection/web` in ESP-WHO v1.1.0. This version has ESP32-CAM face detection. THE NEWER VERSIONS DO NOT SEEM TO WORK.
 
 ## Features
 
@@ -52,7 +55,12 @@ Functionality taken from the original ESP-WHO example, with:
 4.  **Configurations:**
     * Open an ESP-IDF Environment terminal in the project root, or navigate there.
     * Run `idf.py set-target esp32`.
-    * Run `idf.py menuconfig`. Review the settings (especially `Serial Flasher Config`, `CPU Frequency (set to 240MHz)`, and `Component config -> ESP PSRAM`). Save and exit. NOTE: The project includes an `sdkconfig.defaults` file which should work.
+    * Run `idf.py menuconfig` and Review settings:
+	`Serial Flasher Config` 
+	`CPU Frequency (set to 240MHz)`
+	`Component config -> ESP PSRAM -->[*] Support for external, SPI-connected RAM`
+	`ESP-WHO Conifg--> Cam config -->Select Camera Pinout (ESP32-CAM by AI-Thinker)`
+	Save and exit. NOTE: The project includes an `sdkconfig` file which should work.
 5.  **Build:** `idf.py build`
 6.  **Flash & Monitor:** `idf.py -p COMXX flash monitor` XX=com port.
 7.  **Access Webpage:** After the devise boots and connects to WiFi, it will print the IP address in the terminal. Copy/Paste this IP address in a web browser. 
@@ -66,6 +74,7 @@ Functionality taken from the original ESP-WHO example, with:
 
 * **ESP-IDF:** (v5.4.1)
 * **ESP-WHO:** Version 1.1.0 (components included locally, NOT CONNECTED TO GIT). Updates to these local components from newer ESP-WHO versions should be done with caution.
+
 ## Disclaimer
 
 This project and its associated code are provided "AS IS", without any warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and noninfringement. In no event shall the authors or contributors be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.

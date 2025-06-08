@@ -4,9 +4,9 @@ ESP32 application with WiFi, WebSocket server, and MQTT client for AWS IoT. It i
 
 <img src="pics/websocket_cl1.png" alt="websocket clinet 1" width="450">
 
-<img src="ics/websocket_cl2.png" alt="websocket clinet 1" width="450">
+<img src="pics/websocket_cl2.png" alt="websocket clinet 1" width="450">
 
-<img src="pics/websocket_heartbeat" alt="websocket heartbeat" width="450">
+<img src="pics/websocket_heartbeat.png" alt="websocket heartbeat" width="450">
 
 ## Features
 

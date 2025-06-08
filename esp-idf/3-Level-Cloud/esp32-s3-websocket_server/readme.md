@@ -64,7 +64,8 @@ ESP32 application with WiFi, WebSocket server, and MQTT client for AWS IoT. It i
     * `AmazonRootCA1.pem`
     * `new_certificate.pem` (device certificate)
     * `new_private.key` (device private key)
-    The `CMakeLists.txt` in the `main` component is configured to embed these files.
+    
+	IMPORTANT NOTE: The `CMakeLists.txt` in the `main` component is configured to embed these files WITH THOSE EXACT NAMES. Be very careful with name changes...
 
 5.  **Project Configuration (`main/config.h`)**:
     Modify `main/config.h` to enable/disable modules and set parameters:

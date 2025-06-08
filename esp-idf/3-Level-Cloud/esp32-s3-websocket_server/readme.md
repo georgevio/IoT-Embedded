@@ -57,7 +57,7 @@ graph TD
 * **WiFi Connectivity**: Connection to a local WiFi.
 * **WebSocket Server**: Tested communication with client application (websocket_cl;ient.html). Pictures below.
 * **MQTT Client**: Communication with an MQTT broker, pre-configured for AWS IoT.
-* **Modular**: In `config.h` you can enabling/disabling modules and `certificates/secrets.h` (user-created) for credentials (WIFI ssid/password, etc.).
+* **Modular**: In `config.h` you can enabling/disabling modules and `certificates/secrets.h` (file has to be created, example below) for credentials (WIFI ssid/password, etc.).
 
 
 ## Prerequisites

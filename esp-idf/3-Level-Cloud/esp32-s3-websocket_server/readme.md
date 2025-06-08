@@ -39,6 +39,7 @@ graph TD
     Sen -- "Sensor Event Data" --> B
     B -- "Facial Recognition" --> C
     B -- "If not found, forward image <br/>(MQTT)" --> D
+    C -- "not found" --> B
     D -- "Further Investigation (e.g., false positives/negatives)" --> E
 
     %% Styling

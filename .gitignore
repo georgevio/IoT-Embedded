@@ -3,6 +3,10 @@
 secrets.h
 secret.h  
 
+#igonre any PKCS files
+*.key
+*.pem
+
 # Ignore multi backup, third_party libs and test folders
 BACKUP/
 test_codes/

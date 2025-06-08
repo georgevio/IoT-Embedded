@@ -36,7 +36,7 @@ static void face_sending_task(void* pvParameters)
             // Send frame ONLY if WebSocket is connected and Wi-Fi has an IP
             if (wifi_has_ip && is_websocket_connected())
             {
-                ESP_LOGI(TAG_APP_MAIN, "Face detected, WebSocket connected, attempt to send frame.");
+                ESP_LOGI(TAG_APP_MAIN, "Face detected, WebSocket connected, try to send frame.");
                 esp_err_t send_err = websocket_send_frame(frame);
                 if (send_err != ESP_OK)
                 {

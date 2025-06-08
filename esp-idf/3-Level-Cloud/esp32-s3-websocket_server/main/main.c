@@ -68,7 +68,7 @@ void app_main(void) {
         }
     }
     else {
-        ESP_LOGE(TAG, "WiFi not enabled. Rest services will not start.");
+        ESP_LOGE(TAG, "WiFi disabled. Rest services will not start.");
     }
 
 #if MQTT_ENABLED 
@@ -103,12 +103,12 @@ void app_main(void) {
                 ESP_LOGI(TAG, "WebSocket server started...");
                 // WebSocket URI path /ws in websocket_server.c
                 // TWEBSOCKET_PORT in config.h
-                ESP_LOGI(TAG, "WebSocket listens at: ws://" IPSTR ":%d/ws", IP2STR(&ip_info.ip), WEBSOCKET_PORT);
+                ESP_LOGI(TAG, "WebSocket on: ws://" IPSTR ":%d/ws", IP2STR(&ip_info.ip), WEBSOCKET_PORT);
             }
             else {
                 ESP_LOGE(TAG, "Failed netif for WiFi STA to display WebSocket URI.");
-                ESP_LOGI(TAG, "WebSocket server started, but no IP address for URI.");
-                ESP_LOGI(TAG, "WebSocket lsitening at: ws://<ESP32_IP_ADDRESS>:%d/ws", WEBSOCKET_PORT); //
+                ESP_LOGI(TAG, "WebSocket server started, but no IP address.");
+                ESP_LOGI(TAG, "WebSocket on at: ws://<ESP32_IP_ADDRESS>:%d/ws", WEBSOCKET_PORT); //
             }
         }
         else {
@@ -135,7 +135,7 @@ void app_main(void) {
             char ws_message[100];
             snprintf(ws_message, sizeof(ws_message), "ESP32 Heartbeat: %lu. Millis: %llu",
                 loop_counter++, esp_timer_get_time() / 1000); //
-            ESP_LOGI(TAG, "Sending to WebSocket clients: %s", ws_message);
+            ESP_LOGI(TAG, "Sending to clients: %s", ws_message);
             websocket_server_send_text_all(ws_message); //
         }
 #else

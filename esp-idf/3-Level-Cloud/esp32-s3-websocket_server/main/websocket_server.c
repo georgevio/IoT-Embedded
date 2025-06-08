@@ -81,12 +81,12 @@ static esp_err_t websocket_handler(httpd_req_t* req) {
             return ret;
         }
         // ws_pkt.payload is null-terminated by calloc + 1 and if text
-        ESP_LOGI(TAG, "Received packet from fd %d with message: %s", httpd_req_to_sockfd(req), (char*)ws_pkt.payload);
+        ESP_LOGI(TAG, "Received packet from fd %d with: %s", httpd_req_to_sockfd(req), (char*)ws_pkt.payload);
 
-        ESP_LOGI(TAG, "Echoing message back to client fd %d: %s", httpd_req_to_sockfd(req), (char*)ws_pkt.payload);
+        ESP_LOGI(TAG, "Echo message to client fd %d: %s", httpd_req_to_sockfd(req), (char*)ws_pkt.payload);
         ret = httpd_ws_send_frame(req, &ws_pkt);
         if (ret != ESP_OK) {
-            ESP_LOGE(TAG, "httpd_ws_send_frame failed with %s", esp_err_to_name(ret));
+            ESP_LOGE(TAG, "httpd_ws_send_frame failed: %s", esp_err_to_name(ret));
         }
         free(buf);
     }
@@ -178,7 +178,7 @@ esp_err_t start_websocket_server(void) {
         server_event_handler,
         server_handle));
 
-    ESP_LOGI(TAG, "WebSocket server started successfully.");
+    ESP_LOGI(TAG, "WebSocket server started ok!");
     return ESP_OK;
 }
 

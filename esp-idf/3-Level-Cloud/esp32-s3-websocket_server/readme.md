@@ -10,8 +10,15 @@ ESP32 application with WiFi, WebSocket server, and MQTT client for AWS IoT. It i
 
 ## Project Architecture and Purpose
 
-This project is a classic three-tier IoT architecture, from the far-edge to the edge, and eventually to the cloud. The system is designed for decentralized processing by distributing workloads across devices with different capability levels. As the far-edge implementation, an ESP32-CAM camera module is responsible for initial face detection only, due to limited capabilities (i.e., identify a face in a particular image in the video feed). If a face is detected, the image is transmitted over a WebSocket connection to the more powerful ESP32-S3 module, implementing the edge aspect. The WebSocket server running on it ensures a persistent, low-latency, robust communication with the far-edge devices (e.g., camera, sensors, etc.) for real-time applications.
-The ESP32-S3 edge device performs facial recognition by comparing the received image against a local database of known faces. This intermediate step helps for rapid identification without cloud communication, reducing response time for standard, known faces (e.g., the database holds faces of all personnel). If the face is not recognized in the local database, the ESP32-S3 transfers the task to the cloud tier via MQTT to send the image to AWS IoT for more intensive investigation, such as comparison against an extensive database or further analysis (e.g., false positives/negatives of sensors). This 3-tier approach shows an applicable far-edge-to-cloud pipeline, optimized for speed and resource efficiency by assigning tasks at the appropriate level.
+This project is a classic three-tier IoT architecture, from the far-edge to the edge, and eventually to the cloud. The system is designed for decentralized processing by distributing workloads across devices with different capability levels. 
+
+As the far-edge implementation, an ESP32-CAM camera module is responsible for initial face detection only, due to limited capabilities (i.e., detect a face in a particular frame in the video feed. NOTE: Only detect face, not identify). If a face is detected, the particular image only is transmitted over a WebSocket connection to the more powerful ESP32-S3 module, implementing the edge aspect. The WebSocket server running on it ensures a persistent, low-latency, robust communication with the far-edge devices (e.g., camera, sensors, etc.) for real-time applications.
+
+The ESP32-S3 edge device performs facial recognition (identification) by comparing the received image against a local database of known faces. This intermediate step helps for rapid identification without cloud communication, reducing response time for standard, known faces (e.g., the database holds faces of all personnel). 
+
+If the face is not recognized in the local database, the ESP32-S3 transfers the task to the cloud tier via MQTT to send the image to AWS IoT for more intensive investigation, such as comparison against an extensive database or further analysis (e.g., false positives/negatives of sensors). 
+
+This 3-tier approach shows an applicable far-edge-to-cloud pipeline, optimized for speed and resource efficiency by assigning tasks at the appropriate level.
 
 ## Architecture
 

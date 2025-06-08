@@ -15,7 +15,7 @@
 #include "esp_mac.h"
 #include "mqtt.h"
 #include "config.h"
-#include "secret.h" // Contains AWS_IOT_ENDPOINT, AWS_IOT_CLIENT_ID, MQTT_TOPIC_BASE
+#include "../certificates/secret.h" // Contains AWS_IOT_ENDPOINT, AWS_IOT_CLIENT_ID, MQTT_TOPIC_BASE
 
 
 static const char *TAG = "MQTT";

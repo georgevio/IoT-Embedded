@@ -1,7 +1,6 @@
-run idf.py menuconfig
+The following was produced by GEMINI AI, but I checked personally and it is correct. The idea is that you have to set the camera configuration to handle quite big size of code, so, it has to have at least 4MB of memory, and most important, set the partitions of the memory in a way to hanlde the "heavy" code in this directory. Some of the commands might vary depending on the version, so you have to look and search carefully.
 
-From GEMINI AI:
-specific sub-menus within Component config:
+The command to execute is `run idf.py menuconfig`, while you are in th eparticular directory, so the changes will be written to sdkconfig.
 
 For CPU Frequency:
 

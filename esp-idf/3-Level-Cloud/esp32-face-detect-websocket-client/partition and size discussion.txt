@@ -1,4 +1,4 @@
-From AI
+The following text is from AI. the partition table you find in this proejct, is the one proposed by this AI article, and it works :) The file is `partitions.csv`
 
 Partition Tables:
 ESP-IDF uses a partition table to define how to divide the flash memory (for bootloader, application, NVS, PHY data, OTA partitions if used, etc.).

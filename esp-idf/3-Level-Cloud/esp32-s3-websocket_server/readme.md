@@ -26,12 +26,12 @@ graph TD
 
     subgraph Edge
         B[ESP32-S3]
-        C[Local Database (faces)]
+        C["Local Database (faces)"]
     end
 
     subgraph Cloud
         D[AWS IoT]
-        E[Face Database (or Internet search)]
+        E["Face Database (or Internet search)"]
     end
 
     %% Define Connections between Tiers

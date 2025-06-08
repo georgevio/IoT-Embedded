@@ -1,4 +1,4 @@
-# ESP32 WebSocket and MQTT Application
+# ESP32 WebSocket && MQTT Application
 
 ESP32 application with WiFi, WebSocket server, and MQTT client for AWS IoT. It is provides modularity, so you can enable/disable functionalities.
 

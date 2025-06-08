@@ -8,12 +8,56 @@ ESP32 application with WiFi, WebSocket server, and MQTT client for AWS IoT. It i
 
 <img src="pics/websocket_heartbeat.png" alt="websocket heartbeat" width="650">
 
+## Project Architecture and Purpose
+
+This project is a classic three-tier IoT architecture, from the far-edge to the edge, and eventually to the cloud. The system is designed for decentralized processing by distributing workloads across devices with different capability levels. As the far-edge implementation, an ESP32-CAM camera module is responsible for initial face detection only, due to limited capabilities (i.e., identify a face in a particular image in the video feed). If a face is detected, the image is transmitted over a WebSocket connection to the more powerful ESP32-S3 module, implementing the edge aspect. The WebSocket server running on it ensures a persistent, low-latency, robust communication with the far-edge devices (e.g., camera, sensors, etc.) for real-time applications.
+The ESP32-S3 edge device performs facial recognition by comparing the received image against a local database of known faces. This intermediate step helps for rapid identification without cloud communication, reducing response time for standard, known faces (e.g., the database holds faces of all personnel). If the face is not recognized in the local database, the ESP32-S3 transfers the task to the cloud tier via MQTT to send the image to AWS IoT for more intensive investigation, such as comparison against an extensive database or further analysis (e.g., false positives/negatives of sensors). This 3-tier approach shows an applicable far-edge-to-cloud pipeline, optimized for speed and resource efficiency by assigning tasks at the appropriate level.
+
+## Architecture
+
+```mermaid
+graph TD
+    %% Define Nodes and Subgraphs
+    subgraph Far-Edge
+        A[ESP32-CAM]
+        Cam[Camera Module] -- "Video Feed" --> A
+        Sen[Any Sensor e.g., motion detect]
+    end
+
+    subgraph Edge
+        B[ESP32-S3]
+        C[Local Database (faces)]
+    end
+
+    subgraph Cloud
+        D[AWS IoT]
+        E[Face Database (or Internet search)]
+    end
+
+    %% Define Connections between Tiers
+    A -- "Detected Face Image <br/>(WebSocket)" --> B
+    Sen -- "Sensor Event Data" --> B
+    B -- "Facial Recognition" --> C
+    B -- "If not found, forward image <br/>(MQTT)" --> D
+    D -- "Further Investigation (e.g., false positives/negatives)" --> E
+
+    %% Styling
+    style A fill:#cce5ff,stroke:#333,stroke-width:2px
+    style Cam fill:#e6e6fa,stroke:#333,stroke-width:1px,stroke-dasharray: 5 5
+    style Sen fill:#e6e6fa,stroke:#333,stroke-width:1px,stroke-dasharray: 5 5
+    style B fill:#b3ffb3,stroke:#333,stroke-width:2px
+    style C fill:#b3ffb3,stroke:#333,stroke-width:2px
+    style D fill:#ffccb3,stroke:#333,stroke-width:2px
+    style E fill:#ffccb3,stroke:#333,stroke-width:2px
+```
+
 ## Features
 
 * **WiFi Connectivity**: Connection to a local WiFi.
 * **WebSocket Server**: Tested communication with client application (websocket_cl;ient.html). Pictures below.
 * **MQTT Client**: Communication with an MQTT broker, pre-configured for AWS IoT.
 * **Modular**: In `config.h` you can enabling/disabling modules and `certificates/secrets.h` (user-created) for credentials (WIFI ssid/password, etc.).
+
 
 ## Prerequisites
 

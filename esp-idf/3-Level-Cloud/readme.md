@@ -77,8 +77,8 @@ graph TD
 
 1.  **Clone the Repository**:
     ```bash
-    git clone <your-repository-url>
-    cd <repository-name>
+    git clone https://github.com/georgevio/IoT-Embedded/tree/44209bed2eb62c66728a09d3f8922b0b6f668fb5/esp-idf/3-Level-Cloud
+    cd 3-Level-Cloud
     ```
 
 2.  **ESP-IDF Environment**:

@@ -77,9 +77,13 @@ graph TD
 
 1.  **Clone the Repository**:
     ```bash
-    git clone https://github.com/georgevio/IoT-Embedded/tree/44209bed2eb62c66728a09d3f8922b0b6f668fb5/esp-idf/3-Level-Cloud
-    cd 3-Level-Cloud
+    git clone https://github.com/georgevio/IoT-Embedded.git
+    cd IoT-Embedded/esp-idf/3-Level-Cloud
     ```
+Without Git commands, open this GitHub link:
+https://github.com/georgevio/IoT-Embedded/tree/main/esp-idf/3-Level-Cloud
+Click Download ZIP from the repository main page.
+Extract it and work with your files locally.
 
 2.  **ESP-IDF Environment**:
     Ensure ESP-IDF environment is sourced/activated/installed. USE ONLY terminals provided within.

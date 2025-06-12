@@ -85,19 +85,17 @@ ________________________________________
 ### Execution & Data Flow
 
 1.	**Initialization**: `app_main` starts, initializes all services, and starts the WiFi connection. It creates the camera and face detection tasks in a loop.
-**2. iFi Connection:** The app_event_handler waits for a system event to informa that it has an IP address. After this, it sets the `WIFI_CONNECTED_BIT` in `s_app_event_group`.
-2. **WebSocket Connection**: If it is up, the main loop in app_main starts and calls `websocket_client_start()`. The client tries to connect, and on success, its event handler sets the `WEBSOCKET_CONNECTED_BIT`.
-3. **Frame Pipeline**:
+2. WiFi Connection:** The app_event_handler waits for a system event to informa that it has an IP address. After this, it sets the `WIFI_CONNECTED_BIT` in `s_app_event_group`.
+3. **WebSocket Connection**: If it is up, the main loop in app_main starts and calls `websocket_client_start()`. The client tries to connect, and on success, its event handler sets the `WEBSOCKET_CONNECTED_BIT`.
+4. **Frame Pipeline**:
 - The camera task continuously captures frames and sends them into xQueueAIFrame.
 - The face detection task gets frames from xQueueAIFrame. If a face si found, it sends the frame into xQueueFaceFrame.
-
-4. **Sending Logic: **
+5. **Sending Logic:**
 - The face_sending_task pops a frame from xQueueFaceFrame.
 - It then waits the `s_app_event_group` for  WiFi and WebSocket bits to be set. So, it cannot try to send data before wifi and websocket are both ok, up and running. 
 - After the connection is ok, it calls `websocket_send_frame()` and sends the (raw) image.
-
-5. **isconnection Handling**: 
-If the WiFi connection drops, the `app_event_handler` clears the relevant bits in the event group and stops the WebSocket client. The face_sending_task then waits ns because its `xEventGroupWaitBits` call will fail. The main loop in `app_main` will wait for WiFi to reconnect and only then restart the process.
+6. **isconnection Handling**: 
+If the WiFi connection drops, the `app_event_handler` clears the relevant bits in the event group and stops the WebSocket client. The `face_sending_task` then waits ns because its `xEventGroupWaitBits` call will fail. The main loop in `app_main` will wait for WiFi to reconnect and only then restart the process. TODO: What happens if the WIFI is not available? does it drain the battery trying? 
 ________________________________________
 **How to Build**
 To build the project, run the following commands within the project's root directory:
@@ -105,13 +103,14 @@ To build the project, run the following commands within the project's root direc
 ```
 Bash
 # Clean any previous build artifacts (recommended)
-`idf.py fullclean`
+idf.py fullclean
 
 # Build the project
-`idf.py build`
+idf.py build
 
 # Flash to the device and open a serial monitor
-`idf.py flash monitor`
-# or if you wish, all together
-`idf.py -p COMXX fullclean build flash monitor`
+idf.py flash monitor
+
+# or if you wish, all together (Highly recommended, saves time and errors!) XX=port num in Windows.
+idf.py -p COMXX fullclean build flash monitor
 ```

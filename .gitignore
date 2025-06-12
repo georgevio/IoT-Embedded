@@ -13,6 +13,8 @@ test_codes/
 tests/
 third_party/
 certificates/
+temp/
+temp
 
 # Ignore all *.lock files
 *.lock

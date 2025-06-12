@@ -2,11 +2,25 @@
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
+#include "esp_camera.h"
 
-void register_human_face_detection(QueueHandle_t frame_i,
-                                   QueueHandle_t event,
-                                   QueueHandle_t result,
-                                   QueueHandle_t frame_o = NULL,
-                                   const bool camera_fb_return = false);
+// George struct for the bounding box.
+typedef struct {
+    int x;
+    int y;
+    int w;
+    int h;
+} face_box_t;
+
+
+typedef struct {
+    camera_fb_t* fb;
+    face_box_t box;
+    uint32_t id; // The struct with a unique ID.
+} face_to_send_t;
+
+
+void register_human_face_detection(const QueueHandle_t frame_i,
+    const QueueHandle_t event,
+    const QueueHandle_t result,
+    const QueueHandle_t frame_o);

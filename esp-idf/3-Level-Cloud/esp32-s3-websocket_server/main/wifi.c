@@ -20,7 +20,7 @@
 
 static const char *TAG = "WIFI";
 
-// Define WiFi event group globals
+// WiFi event globals
 EventGroupHandle_t wifi_event_group;
 const int WIFI_CONNECTED_BIT = BIT0;
 static bool wifi_connected_status = false;
@@ -31,7 +31,7 @@ static void wifi_event_handler(void* arg, esp_event_base_t event_base,
     if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START) {
         esp_wifi_connect();
     } else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED) {
-        ESP_LOGI(TAG, "Wi-Fi disconnected, retrying...");
+        ESP_LOGI(TAG, "WiFi disconnected, retrying...");
         wifi_connected_status = false;
         esp_wifi_connect();
         xEventGroupClearBits(wifi_event_group, WIFI_CONNECTED_BIT);

@@ -20,6 +20,16 @@ If the face is not recognized in the local database, the ESP32-S3 transfers the 
 
 This 3-tier approach shows an applicable far-edge-to-cloud pipeline, optimized for speed and resource efficiency by assigning tasks at the appropriate level.
 
+## Custom Data Transfer Protocol
+
+The data transfer protocol between the websocket client (ESP32-CAM) and websocket server (ESP32-S3) is as follows:
+
+On-Device Cropping: When the ESP32-CAM detects a face, crops the image to the specific bounding box of the detected face, so it reduces the size of the frame transmitted (Rough calculations: Full frame, uncomprossed QVGA ~150KBytes. Cropped face image ~40-60KB).
+
+Application-Level Fragmentation: The cropped image is sent to the server in a series of chunks (~8KB each). The transfer is managed by a custom protocol using JSON control messages ({"type":"frame_start", ...}, {"type":"frame_end"}) that bracket the binary data. This is independent from the WebSocket library. Test it extensively!
+
+Unique ID: Each face image is assigned an incrementing ID included in the messages and logged by the client and the server. TODO: Create an advanced complex ID, based on for example the MAC ADDRESS.
+
 ## Architecture
 
 ```mermaid

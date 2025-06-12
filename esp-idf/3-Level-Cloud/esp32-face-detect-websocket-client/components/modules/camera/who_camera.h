@@ -194,6 +194,23 @@
 
 #define XCLK_FREQ_HZ 10000000
 
+// George: Added camera start/stop
+#ifdef __cplusplus
+extern "C" {
+#endif
+/**
+ * @brief Stops the camera frame capture.
+ */
+void camera_stop();
+
+/**
+ * @brief (Re)start the camera frame capture.
+ */
+void camera_start();
+#ifdef __cplusplus
+}
+#endif
+
 #ifdef __cplusplus
 extern "C"
 {

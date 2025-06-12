@@ -1,0 +1,8 @@
+There were several and persistent recv_udp errors at the first implementations. THe errors were indentified as the low-level networking stack getting corrupted. 
+the verdict was that the server cannot effectively handle 150KB size frames from the client as one chunk.
+
+The client is trying to send the entire image at once. The server's networking buffers cannot handle such a size single incoming packet, so it corrupts the LwIP networking stack and causes crashes before any other code even runs!
+
+The only solution is to force the client to send the large frame fragmented
+1. Client Fix: Implement Frame Fragmentation
+The most important change is to modify the client so it no longer sends a single,  150KB packet. Instead, it will break the image into 4KB parts and send them as a  fragmented WebSocket message. It seems a better way to handle large payloads.

@@ -3,8 +3,8 @@
 
 #include "esp_err.h"
 
-#ifdef __cplusplus // If this is compiled by a C++ compiler
-extern "C" {       // Tell the C++ compiler that the functions declared here have C linkage
+#ifdef __cplusplus 
+extern "C" {       // C linkage for C++ compilers
 #endif
 
 /**

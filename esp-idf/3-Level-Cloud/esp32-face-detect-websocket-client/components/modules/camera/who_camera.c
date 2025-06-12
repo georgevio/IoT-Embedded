@@ -1,10 +1,13 @@
 #include "who_camera.h"
-
 #include "esp_log.h"
 #include "esp_system.h"
+#include "driver/gpio.h" // Required for gpio_config_t
 
 static const char *TAG = "who_camera";
 static QueueHandle_t xQueueFrameO = NULL;
+
+// George store the camera task ---
+static TaskHandle_t xCameraTaskHandle = NULL;
 
 static void task_process_handler(void *arg)
 {
@@ -69,7 +72,7 @@ void register_camera(const pixformat_t pixel_fromat,
     esp_err_t err = esp_camera_init(&config);
     if (err != ESP_OK)
     {
-        ESP_LOGE(TAG, "Camera init failed with error 0x%x", err);
+        ESP_LOGE(TAG, "Camera init failed: 0x%x", err);
         return;
     }
 
@@ -85,10 +88,27 @@ void register_camera(const pixformat_t pixel_fromat,
     //initial sensors are flipped vertically and colors are a bit saturated
     if (s->id.PID == OV3660_PID)
     {
-        s->set_brightness(s, 1);  //up the brightness just a bit
-        s->set_saturation(s, -2); //lower the saturation
+        s->set_brightness(s, 1);  //increase brightness
+        s->set_saturation(s, -2); //lower saturation
     }
 
     xQueueFrameO = frame_o;
-    xTaskCreatePinnedToCore(task_process_handler, TAG, 3 * 1024, NULL, 5, NULL, 1);
+    // George the handle the task
+    xTaskCreatePinnedToCore(task_process_handler, TAG, 3 * 1024, NULL, 5, &xCameraTaskHandle, 1);
+}
+
+// -George stop camera when face detected for XX sec
+void camera_stop() {
+    if (xCameraTaskHandle != NULL) {
+        vTaskSuspend(xCameraTaskHandle);
+        ESP_LOGI(TAG, "Camera task suspended.");
+    }
+}
+
+// George camera resume
+void camera_start() {
+    if (xCameraTaskHandle != NULL) {
+        vTaskResume(xCameraTaskHandle);
+        ESP_LOGI(TAG, "Camera task resumed.");
+    }
 }

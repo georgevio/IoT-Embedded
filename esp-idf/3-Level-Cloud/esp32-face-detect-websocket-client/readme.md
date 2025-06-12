@@ -6,14 +6,14 @@ This project captures video from an ESP32 camera, perorming real-time face detec
 
 ## Project Architecture
 
-The system is designed with a clear separation, each component has a specific task. They communicate using thread-safe FreeRTOS primitives like Queues and Event Groups.
+The system is designed with modularity in mind, each component has a specific task. They communicate using thread-safe FreeRTOS primitives like Queues and Event Groups.
 
 ## Core Components
 
 - app_main.cpp (Orchestrator): Initializes and manages all other components. It handles the main application and state transitions.
 - `websocket_client.cpp` (Network Communicator): Implements connection logic, sending data, and actively mantain the WebSocket connection. IMPORTANT: It has to be cpp, because of communication with  /*.hpp files from esp libraries.*
 - `wifi.c` (Connectivity Layer): Will handle the Wi-Fi connection and reconnection.
-- •	Face Detection: ESP-IDF provided external library (`who_human_face_detection`). It will processes image frames to find faces (detect). AGAIN, be careful with the particular version if used in ESP32-CAM (up-to-date versions do not work).
+- •	Face Detection: ESP-IDF provided external library (`who_human_face_detection`). It will processes image frames to find faces (detect). IMPORTANT: make sure that the /componets/esp-dl directory is from esp-who v1.1.0, this is the one containing the correct face detection libraries, if used in ESP32-CAM (up-to-date versions do not work)
 - Camera Driver: ESP-IDF external library (`who_camera`) that configures the camera and captures image frames. IMPORTANT: Remember to set the particular project and camera settings via `idf.py menuconfig`. Make sure you set the correct memory size and partitions (provided in the project).
 
 ## Architectural Diagram

@@ -14,7 +14,6 @@ void websocket_client_start(EventGroupHandle_t event_group);
 void websocket_client_stop(void);
 esp_err_t websocket_send_heartbeat(void);
 esp_err_t websocket_send_frame(const uint8_t *data, size_t len);
-esp_err_t websocket_send_text(const char* text); 
 
 #ifdef __cplusplus
 }

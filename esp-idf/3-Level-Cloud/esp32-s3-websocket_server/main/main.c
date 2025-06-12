@@ -121,29 +121,13 @@ void app_main(void) {
 #endif // End of WEBSOCKET_ENABLED
 
     // Main loop
-    uint32_t loop_counter = 0;
     while (1) {
-#if MQTT_ENABLED
-        if (mqtt_client != NULL && mqtt_is_connected()) { //
-            ESP_LOGI(TAG, "Publishing heartbeat message to AWS IoT...");
-            mqtt_publish_message(mqtt_client, MQTT_TOPIC_DEVICE, "esp32-heartbeat", 0, 0); //
-        }
-#endif
-
-#if WEBSOCKET_ENABLED
-        if (WIFI_ENABLED && wifi_is_connected() && websocket_server_is_client_connected()) { //
-            char ws_message[100];
-            snprintf(ws_message, sizeof(ws_message), "ESP32 Heartbeat: %lu. Millis: %llu",
-                loop_counter++, esp_timer_get_time() / 1000); //
-            ESP_LOGI(TAG, "Sending to clients: %s", ws_message);
-            websocket_server_send_text_all(ws_message); //
-        }
-#else
-        if (!(WIFI_ENABLED && wifi_is_connected() && websocket_server_is_client_connected())) {
-            loop_counter++;
-        }
-#endif
-        ESP_LOGD(TAG, "Local heartbeat loop_counter: %lu", loop_counter);
-        vTaskDelay(pdMS_TO_TICKS(SAMPLING_INTERVAL_MS < 5000 ? 5000 : SAMPLING_INTERVAL_MS)); //
+        // --- MODIFICATION START ---
+        // The server-side heartbeat logic has been removed from this loop.
+        // The server now only reacts to messages from clients.
+        // This loop can be used for other periodic tasks or just to keep the main task alive.
+        ESP_LOGD(TAG, "Main loop running...");
+        vTaskDelay(pdMS_TO_TICKS(SAMPLING_INTERVAL_MS)); 
+        // --- MODIFICATION END ---
     }
 }

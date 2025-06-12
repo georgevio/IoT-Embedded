@@ -66,7 +66,6 @@ graph TD
 * **MQTT Client**: Communication with an MQTT broker, pre-configured for AWS IoT.
 * **Modular**: In `config.h` you can enabling/disabling modules and `certificates/secrets.h` (file has to be created, example below) for credentials (WIFI ssid/password, etc.).
 
-
 ## Prerequisites
 
 * Espressif IoT Development Framework (ESP-IDF) v5.x installed and configured.
@@ -80,10 +79,11 @@ graph TD
     git clone https://github.com/georgevio/IoT-Embedded.git
     cd IoT-Embedded/esp-idf/3-Level-Cloud
     ```
-Without Git commands, open this GitHub link:
-https://github.com/georgevio/IoT-Embedded/tree/main/esp-idf/3-Level-Cloud
-Click Download ZIP from the repository main page.
-Extract it and work with your files locally.
+   Without Git commands, open this GitHub link:
+   
+   https://github.com/georgevio/IoT-Embedded/tree/main/esp-idf/3-Level-Cloud
+   Click Download ZIP from the repository main page.
+   Extract it and work with your files locally.
 
 2.  **ESP-IDF Environment**:
     Ensure ESP-IDF environment is sourced/activated/installed. USE ONLY terminals provided within.

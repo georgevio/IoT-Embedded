@@ -1,6 +1,6 @@
 # ESP32-CAM Face Detection WebSocket Client
 
-**IMPORTANT NOTE:** make sure that the `/componets/esp-dl` directory is from `esp-who v1.1.0`, this is the one containing the correct face recognition libraries. NEWER LIBRARIES DONT. Several files in the components libraries have been heavily adapted (e.g., `../components/modules/ai/who_human_face_detection.cpp'). All alterations have comments starting with `// George`.
+**IMPORTANT NOTE:** make sure that the `/componets/esp-dl` directory is from `esp-who v1.1.0`, this is the one containing the correct face recognition libraries. NEWER LIBRARIES DONT. Several files in the components libraries have been heavily adapted (e.g., `../components/modules/ai/who_human_face_detection.cpp'). All alterations have comments starting with "// George".
 
 This project captures video from an ESP32 camera, perorming real-time face detection over the video stream, and if a face is detected (NOT identified due to limited capabilites), sends the particular frames (those with faces) to a websocket server. It implemepts concurennt tasks (FreeRTOS capability from ESP-IDF libraries) over an event-driven architecture to identify network state (e.g., wifi status).
 

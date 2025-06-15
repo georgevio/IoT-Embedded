@@ -1,3 +1,14 @@
+ ⚠️ **This Repository is Obsolete and Archived**
+
+As of June 15, 2025, this project is no longer maintained or monitored. It has been superseded by a new, completely rewritten version.
+
+**Please find the new and actively maintained project at:**
+
+### **[https://github.com/georgevio/TriCloudEdge](https://github.com/georgevio/TriCloudEdge)**
+
+All future development, issues, and pull requests should be directed to the new repository. This old repository will remain available as a read-only historical reference.
+
+
 # ESP32 WebSocket && MQTT Application
 
 ESP32 application with WiFi, WebSocket server, and MQTT client for AWS IoT. It is provides modularity, so you can enable/disable functionalities.

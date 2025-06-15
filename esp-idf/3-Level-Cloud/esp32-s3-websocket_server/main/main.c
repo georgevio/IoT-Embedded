@@ -106,9 +106,11 @@ void app_main(void) {
                 ESP_LOGI(TAG, "WebSocket on: ws://" IPSTR ":%d/ws", IP2STR(&ip_info.ip), WEBSOCKET_PORT);
             }
             else {
-                ESP_LOGE(TAG, "Failed netif for WiFi STA to display WebSocket URI.");
+                ESP_LOGE(TAG, "WiFi STA (netif) failed to display WebSocket URI.");
                 ESP_LOGI(TAG, "WebSocket server started, but no IP address.");
-                ESP_LOGI(TAG, "WebSocket on at: ws://<ESP32_IP_ADDRESS>:%d/ws", WEBSOCKET_PORT); //
+                ESP_LOGI(TAG, "============ CONNECT TO THE IP ADDRESS ==================");
+                ESP_LOGI(TAG, "WebSocket on at: ws://<ESP32_IP_ADDRESS>:%d/ws", WEBSOCKET_PORT); 
+                ESP_LOGI(TAG, "=========================================================");
             }
         }
         else {
@@ -116,18 +118,13 @@ void app_main(void) {
         }
     }
     else {
-        ESP_LOGI(TAG, "WebSocket server not started, WiFi disabled.");
+        ESP_LOGI(TAG, "WebSocket server can not start, WiFi is disabled.");
     }
 #endif // End of WEBSOCKET_ENABLED
 
-    // Main loop
+    // Main loop: not doing much currently, load periodic tasks here...
     while (1) {
-        // --- MODIFICATION START ---
-        // The server-side heartbeat logic has been removed from this loop.
-        // The server now only reacts to messages from clients.
-        // This loop can be used for other periodic tasks or just to keep the main task alive.
         ESP_LOGD(TAG, "Main loop running...");
         vTaskDelay(pdMS_TO_TICKS(SAMPLING_INTERVAL_MS)); 
-        // --- MODIFICATION END ---
     }
 }

@@ -9,7 +9,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#include "../certificates/secret.h"  // Include sensitive configuration
+#include "../certificates/secret.h"  // Include sensitive configuration. HAS TO BE CREATED!
 
 // Module enable flags
 #define MQTT_ENABLED 0

@@ -1,0 +1,2 @@
+this is an archetype and not really functional example of face recognition based on esp-who libraries. It compiles correctly, and outputs to the terminal the basic functionality of comparing images and trying to find a match (face recognition emulation).
+the images are not really used (jpeg libraries of esp-who exists, but seem really complex to integrade)

@@ -1,0 +1,6 @@
+dependencies:
+  ## Required IDF version
+  idf:
+    version: '>=4.1.0'
+  espressif/human_face_detect: '*' # star brings the latest available. dangerous if it updates. Maybe you need to fix the version. Never investigated...
+  espressif/human_face_recognition: '*'

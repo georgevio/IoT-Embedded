@@ -1,7 +1,7 @@
 /**
  * @file mqtt.h
- * @brief MQTT client module header for AWS IoT
- * 
+ * @brief MQTT client module for AWS IoT
+ * Can be potenially used for other MQTT brokers. Credentials need to be created/updated.
  * Handles MQTT client initialization, connection, and publishing to AWS IoT.
  */
 

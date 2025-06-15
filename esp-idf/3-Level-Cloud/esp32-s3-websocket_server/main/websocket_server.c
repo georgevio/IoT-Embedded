@@ -1,3 +1,5 @@
+/* Code was taken from espidff examples and internet provided. Functionalities were used as-is */
+
 #include "esp_http_server.h"
 #include <esp_event.h>
 #include <esp_log.h>

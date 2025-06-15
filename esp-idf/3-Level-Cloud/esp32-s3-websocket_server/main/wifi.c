@@ -1,8 +1,8 @@
 /**
  * @file wifi.c
- * @brief WiFi connectivity module implementation
+ * @brief WiFi connect implementation
  * 
- * Handles WiFi station mode initialization and connection management.
+ * Handles WiFi in station mode init and connection management.
  */
 
 #include <string.h>
@@ -66,7 +66,7 @@ void wifi_init_sta(void)
 
     ESP_LOGI(TAG, "wifi_init_sta finished");
     
-    // Wait for connection (blocking call)
+    // Wait for connection (blocking call). Maybe you want to add a function to die if not connected within XX min...
     xEventGroupWaitBits(wifi_event_group, WIFI_CONNECTED_BIT, false, true, portMAX_DELAY);
 }
 

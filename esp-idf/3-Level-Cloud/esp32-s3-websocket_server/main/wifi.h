@@ -1,8 +1,8 @@
 /**
  * @file wifi.h
- * @brief WiFi connectivity module header
+ * @brief WiFi connectivity header
  * 
- * Handles WiFi station mode initialization and connection management.
+ * WiFi station mode initialization and connection management.
  */
 
 #ifndef WIFI_H
@@ -17,19 +17,19 @@
 extern EventGroupHandle_t wifi_event_group;
 
 /**
- * @brief Bit flag indicating WiFi connection
+ * @brief Bit flag for WiFi connection status
  */
 extern const int WIFI_CONNECTED_BIT;
 
 /**
- * @brief Initialize WiFi as a station and connect to the configured access point
+ * @brief Initialize WiFi as a station and connect to the access point via configuration parameters (SSID, passowrd)
  * 
- * This function will block until WiFi connection is established
+ * Will block until there is a WiFi connection
  */
 void wifi_init_sta(void);
 
 /**
- * @brief Check if WiFi is currently connected
+ * @brief Check if WiFi is already connected
  * 
  * @return true if connected, false otherwise
  */

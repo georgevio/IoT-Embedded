@@ -2,16 +2,16 @@
  * @file config.h
  * @brief Configuration for ESP32 application modules
  * 
- * Contains configuration flags to enable/disable various modules
+ * Configuration flags to enable/disable various modules
  * and their respective settings.
  */
 
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#include "../certificates/secrets.h"  // Include sensitive configuration
+#include "../certificates/secret.h"  // Include sensitive configuration
 
-// Module enable flags
+// MQTT will try to connect to AWS with credentials from secret.h
 #define MQTT_ENABLED 0
 
 #define WIFI_ENABLED 1

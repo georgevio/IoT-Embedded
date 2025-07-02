@@ -1,0 +1,68 @@
+dependencies:
+  espressif/esp-dl:
+    component_hash: 6d4bea514a682c180cc8c847aec1a0024bb80861daf0a6c8adfec5b0ad592987
+    dependencies:
+    - name: espressif/esp_new_jpeg
+      registry_url: https://components.espressif.com
+      require: private
+      version: ^0.6.1
+    - name: idf
+      require: private
+      version: '>=5.3'
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    targets:
+    - esp32s3
+    - esp32p4
+    version: 3.1.4
+  espressif/esp_new_jpeg:
+    component_hash: e6af208a875abd0ecfc0213d3751a11b504b463ebde6930f24096047925fa5c1
+    dependencies: []
+    source:
+      registry_url: https://components.espressif.com
+      type: service
+    targets:
+    - esp32
+    - esp32s2
+    - esp32s3
+    - esp32p4
+    - esp32c2
+    - esp32c3
+    - esp32c5
+    - esp32c6
+    version: 0.6.1
+  espressif/human_face_detect:
+    component_hash: c863910d33e62ce9b7897b87f4def8b408b7d790e631e1ca57d2e2af0744cbb0
+    dependencies:
+    - name: espressif/esp-dl
+      registry_url: https://components.espressif.com
+      require: private
+      version: ^3.1.3
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    version: 0.2.3
+  espressif/human_face_recognition:
+    component_hash: 6e158c3501d53d6fa65c2ea35194fd43dc2994d9f3b032798c544657664223b6
+    dependencies:
+    - name: espressif/human_face_detect
+      registry_url: https://components.espressif.com
+      require: private
+      version: ^0.2.1
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    version: 0.2.2
+  idf:
+    source:
+      type: idf
+    version: 5.4.1
+direct_dependencies:
+- espressif/esp-dl
+- espressif/human_face_detect
+- espressif/human_face_recognition
+- idf
+manifest_hash: 12a73c08c962f6d681d49623f125cc0032ad156eaf0011d6d129934a0b96030c
+target: esp32s3
+version: 2.0.0

@@ -1,0 +1,11 @@
+dependencies:
+  espressif/human_face_detect:
+    version: ^0.2.3
+description: human face recognition model.
+license: MIT
+repository: git://github.com/espressif/esp-dl.git
+repository_info:
+  commit_sha: 9af7f980ee4f0b22a44afebb9bcb7504aa09c152
+  path: models/human_face_recognition
+url: https://github.com/espressif/esp-dl/tree/master/models/human_face_recognition
+version: 0.2.3

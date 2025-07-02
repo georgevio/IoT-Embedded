@@ -1,0 +1,17 @@
+## IDF Component Manager Manifest File
+dependencies:
+  # For Face Recognition
+  espressif/human_face_detect: '*' # star brings the latest available. dangerous if it updates. Maybe you need to fix the version. Never investigated..
+  espressif/human_face_recognition: "*"
+  # For Image Processing (resizing, color conversion)
+  espressif/esp-dl: "*"
+  # Standard IDF components your project uses
+  idf:
+    version: ">=5.0"
+  #esp_http_server: "*"
+  #esp_wifi: "*"
+  #esp_netif: "*"
+  #nvs_flash: "*"
+  #spiffs: "*"
+  #json: "*"
+  #mqtt: "*"
